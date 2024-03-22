@@ -5,12 +5,37 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/logo.png" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>BrowseLLM</title>
+		<style>
+			@font-face {
+				font-family: "Lexend Exa";
+				src: url("../assets/fonts/LexendExa-VariableFont_wght.ttf");
+			}
+		</style>
+		<script src="script.js" type="module" />
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="bg-stone-900 text-white p-8">
+		<div class="sticky top-0">
+			<div class="text-center text-4xl">BrowseLLM</div>
+			<div class="text-center py-4">Welcome! How can I help you today?</div>
+			<div class="text-center py-4">
+				<input
+					id="prompt"
+					type="text"
+					class="text-black w-full rounded-t bg-white outline-none resize-none p-4"
+					placeholder="Write your initial prompt here..."
+				/>
+			</div>
+			<div class="text-center py-4">
+				<button id="start" class="bg-white text-black rounded p-4">
+					Let's Go!
+				</button>
+			</div>
+		</div>
+		<div class="py-4">
+			<hr />
+		</div>
 	</body>
 </html>
