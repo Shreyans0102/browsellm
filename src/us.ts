@@ -16,6 +16,11 @@ window.addEventListener('message', async function (event) {
     // await chrome.runtime.sendMessage({response: "Response from the content script!"})
     eval(message.code)
 
+    // await chrome.storage.session.set({
+    //   // dom: document.getElementsByName('html')[0].outerHTML,
+    //   dom: 'something',
+    // })
+
     // const queryOptions = { active: true, lastFocusedWindow: true }
     // const [tab] = await chrome.tabs.query(queryOptions)
 
