@@ -10,9 +10,9 @@
   "action": {
     "default_title": "Click to open panel."
   },
-  "permissions": ["sidePanel", "scripting", "userScripts", "tabs"],
+  "permissions": ["sidePanel", "scripting", "userScripts", "tabs", "activeTab"],
   "host_permissions": [
-    "https://*/*"
+    "<all_urls>"
   ],
   "side_panel": {
     "default_path": "index.html"

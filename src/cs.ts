@@ -1,9 +1,5 @@
-// window.addEventListener('message', function (event) {
-//   const message = event.data
-//   if (message.action === 'injectCode') {
-//     postMessage({response: "Response from the content script!"}, { targetOrigin: event.origin })
-//     eval(message.code)
-//   } else {
-//     console.log(message)
-//   }
-// })
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'getDom') {
+    sendResponse(document.getElementsByTagName('html')[0].outerHTML)
+  }
+})
