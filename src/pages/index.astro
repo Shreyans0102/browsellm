@@ -16,7 +16,7 @@
 		</style>
 		<script src="script.js" type="module" />
 	</head>
-	<body class="bg-stone-900 text-white p-8">
+	<body class="bg-stone-900 font-sans text-white p-8">
 		<div class="sticky top-0">
 			<div class="text-center text-4xl">BrowseLLM</div>
 			<div class="text-center py-4">Welcome! How can I help you today?</div>
@@ -24,12 +24,12 @@
 				<input
 					id="prompt"
 					type="text"
-					class="text-black w-full rounded-t bg-white outline-none resize-none p-4"
+					class="text-white w-full rounded-t bg-stone-800 hover:bg-stone-700 focus:bg-stone-700 transition-colors outline-none resize-none p-4"
 					placeholder="Write your initial prompt here..."
 				/>
 			</div>
 			<div class="text-center py-4">
-				<button id="start" class="bg-white text-black rounded p-4">
+				<button id="start" class="bg-white hover:bg-opacity-85 active:bg-opacity-60 text-black text-lg rounded w-36 h-12">
 					Let's Go!
 				</button>
 			</div>
