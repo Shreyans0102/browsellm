@@ -10,7 +10,7 @@
   "action": {
     "default_title": "Click to open panel."
   },
-  "permissions": ["sidePanel", "scripting", "userScripts", "tabs", "activeTab"],
+  "permissions": ["sidePanel", "scripting", "userScripts", "tabs", "activeTab", "storage"],
   "host_permissions": [
     "<all_urls>"
   ],
@@ -41,6 +41,17 @@
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "js": ["cs.js"]
+    "js": [
+      "cs.js",
+      "/assets/start1.js",
+      "/assets/start2.js",
+      "/assets/client.js",
+      "/assets/index2.js",
+      "/assets/MainPage.js",
+      "/assets/web.js",
+      "/assets/astro/server.js"
+    ],
+    "css": ["/assets/index.css"],
+    "run_at": "document_start"
   }]
 }

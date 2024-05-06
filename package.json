@@ -5,21 +5,31 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && cp src/manifest.json dist/manifest.json && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/script.ts --outfile=dist/script.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
+    "build": "astro check && astro build && cp src/manifest.json dist/manifest.json && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.19.0",
-    "@astrojs/check": "^0.5.9",
+    "@astrojs/check": "0.5.10",
+    "@astrojs/solid-js": "^4.1.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@nanostores/solid": "^0.4.2",
     "@types/bun": "^1.0.10",
-    "astro": "^4.5.6",
+    "astro": "4.7.0",
+    "groq-sdk": "^0.3.2",
+    "nanostores": "^0.10.3",
     "openai": "^4.29.2",
+    "solid-js": "^1.8.17",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.263"
+    "@iconify/json": "^2.2.204",
+    "@types/chrome": "^0.0.263",
+    "@unocss/preset-icons": "^0.59.4",
+    "@unocss/preset-web-fonts": "^0.59.4",
+    "@unocss/reset": "^0.59.4",
+    "unocss": "^0.59.4"
   }
 }
