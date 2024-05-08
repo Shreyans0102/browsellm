@@ -32,9 +32,14 @@ const Settings: Component = () => {
   }
 
   const save = async () => {
+    const keys = { ...allApiKeys() }
+    keys[provider() as Provider] = apiKey()
+    $allApiKeys.set(keys)
+
     await chrome.storage?.local.set({
       provider: provider(),
       apiKey: allApiKeys(),
+      model: model(),
     })
 
     setDialog(false)
@@ -46,10 +51,19 @@ const Settings: Component = () => {
     setApiKey(allApiKeys()[prv])
   }
 
+  const changeApiKey = (key: string) => {
+    setApiKey(key)
+  }
+
   onMount(async () => {
-    const res = await chrome.storage?.local.get(['provider', 'apiKey'])
-    $provider.set(res?.provider || 'groq')
-    $allApiKeys.set(res?.apiKey)
+    const res = await chrome.storage?.local.get(['provider', 'apiKey', 'model'])
+    const prv = res?.provider || provider()
+    const keys = res?.apiKey || allApiKeys()
+    const mdl = res?.model || model()
+    $provider.set(prv)
+    $allApiKeys.set(keys)
+    $model.set(mdl)
+    setApiKey(keys[prv])
   })
 
   return <div>
@@ -72,7 +86,7 @@ const Settings: Component = () => {
           <label class="text-lg">
             Provider
           </label>
-          <select onChange={e => changeProvider(e.target.value as Provider)} class="select my-2">
+          <select value={provider()} onChange={e => changeProvider(e.target.value as Provider)} class="select my-2">
             <option value="groq">
               Groq
             </option>
@@ -92,7 +106,7 @@ const Settings: Component = () => {
             <label class="text-lg">
               API Key
             </label>
-            <input value={apiKey()} onInput={e => setApiKey(e.target.value)} class="input my-2" />
+            <input value={apiKey()} onInput={e => changeApiKey(e.target.value)} class="input my-2" />
           </div>
           <div class="py-4">
             <label class="text-lg">

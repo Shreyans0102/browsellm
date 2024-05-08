@@ -15,11 +15,26 @@ const getDom = async () => {
   }
 }
 
+export const injectCode = async (code: string) => {
+  const queryOptions = { active: true, lastFocusedWindow: true }
+  const [tab] = await chrome.tabs.query(queryOptions)
+
+  const post = (msg: any) => window.postMessage(msg)
+  
+  if (tab.id) {
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id, allFrames: true },
+      func: post,
+      args: [{ action: 'injectCode', code }],
+    })
+  }
+}
+
 export const request = async (prompt: string) => {
   const dom = await getDom()
 
   const content = `
-    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is a DOM (starting with "DOM: ").
+    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is the list of all the inputs and clickable elements in the DOM (starting with "DOM: ").
     You should generate a javascript code that if executed in the page with the given task, it can achieve the required task.
     Make sure to generate correct browser javascript code and only return a code, nothing else.
     Enclose the javascript code like this: append "--------------------" at the start and end of the code block so I can extract the code.
@@ -32,7 +47,8 @@ export const request = async (prompt: string) => {
   switch ($provider.get()) {
     case 'groq':
       const groq = new Groq({
-        apiKey: $allApiKeys.get().groq
+        apiKey: $allApiKeys.get().groq,
+        dangerouslyAllowBrowser: true,
       })
 
       return (await groq.chat.completions.create({
@@ -42,7 +58,7 @@ export const request = async (prompt: string) => {
     
     case 'anthropic':
       const anthropic = new Anthropic({
-        apiKey: $allApiKeys.get().anthropic
+        apiKey: $allApiKeys.get().anthropic,
       })
 
       return (await anthropic.messages.create({
@@ -54,7 +70,8 @@ export const request = async (prompt: string) => {
 
     case 'openai':
       const openai = new OpenAI({
-        apiKey: $allApiKeys.get().openai
+        apiKey: $allApiKeys.get().openai,
+        dangerouslyAllowBrowser: true,
       })
 
       return (await openai.chat.completions.create({

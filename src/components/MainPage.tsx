@@ -1,7 +1,7 @@
 import { Show, createSignal, type Component } from 'solid-js'
 
 import Settings from './Settings'
-import { request } from '../helpers/request'
+import { injectCode, request } from '../helpers'
 
 const MainPage: Component = () => {
   const [prompt, setPrompt] = createSignal('')
@@ -9,11 +9,23 @@ const MainPage: Component = () => {
   const [response, setReponse] = createSignal('')
 
   const go = async () => {
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
+      
+      const res = await request(prompt()) as string
+      setReponse(res as string)
 
-    setReponse(await request(prompt()) as string)
-
-    setIsLoading(false)
+      const code = res.split('--------------------')[1]
+      await injectCode(code)
+    } catch (error) {
+      if (error instanceof Error) {
+        setReponse(error.message)
+      } else {
+        setReponse(JSON.stringify(error))
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
   
   return <div>

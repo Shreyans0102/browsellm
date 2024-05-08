@@ -10,17 +10,17 @@ export default defineConfig({
     assets: 'assets',
     // inlineStylesheets: 'always',
   },
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          chunkFileNames: 'assets/[name].js',
-          entryFileNames: 'assets/[name].js',
-          assetFileNames: 'assets/[name].[ext]',
-        }
-      }
-    }
-  },
+  // vite: {
+  //   build: {
+  //     rollupOptions: {
+  //       output: {
+  //         chunkFileNames: 'assets/[name].js',
+  //         entryFileNames: 'assets/[name].js',
+  //         assetFileNames: 'assets/[name].[ext]',
+  //       }
+  //     }
+  //   }
+  // },
   integrations: [UnoCSS({
     injectReset: true,
     shortcuts: {

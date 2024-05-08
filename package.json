@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && cp src/manifest.json dist/manifest.json && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
+    "build": "astro check && astro build",
+    "bundle": "bun src/script.ts && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -14,6 +15,7 @@
     "@astrojs/check": "0.5.10",
     "@astrojs/solid-js": "^4.1.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@miyauci/get-event-listeners": "^1.0.0-beta.1",
     "@nanostores/solid": "^0.4.2",
     "@types/bun": "^1.0.10",
     "astro": "4.7.0",
@@ -26,10 +28,12 @@
   },
   "devDependencies": {
     "@iconify/json": "^2.2.204",
+    "@types/cheerio": "^0.22.35",
     "@types/chrome": "^0.0.263",
     "@unocss/preset-icons": "^0.59.4",
     "@unocss/preset-web-fonts": "^0.59.4",
     "@unocss/reset": "^0.59.4",
+    "cheerio": "^1.0.0-rc.12",
     "unocss": "^0.59.4"
   }
 }
