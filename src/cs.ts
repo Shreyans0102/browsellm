@@ -1,9 +1,23 @@
 import { updateEventListener } from '@miyauci/get-event-listeners'
+import { convert } from 'html-to-text'
 
 const getEventListeners = updateEventListener()
 
+const inputExtractor = (el: NodeListOf<HTMLElement>) => {
+  return Array.prototype.slice.call(el).filter((element: HTMLElement) => {
+    return element.checkVisibility({
+      checkOpacity: true,
+      checkVisibilityCSS: true,
+    }) && (
+      (element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'text')
+      || (element.tagName.toLocaleLowerCase() === 'textarea')
+      || (element.hasAttribute('contenteditable') && element.getAttribute('contenteditable') !== 'false')
+    )
+  }).map((element: HTMLElement) => element.cloneNode(true))
+}
+
 const clickExtractor = (el: NodeListOf<HTMLElement>) => {
-  window.scrollTo(0, 0)
+  // window.scrollTo(0, 0)
 
   // const bodyRect = document.body.getBoundingClientRect()
 
@@ -13,7 +27,7 @@ const clickExtractor = (el: NodeListOf<HTMLElement>) => {
     return element.checkVisibility({
       checkOpacity: true,
       checkVisibilityCSS: true,
-    }) && (element.tagName.toUpperCase() !== 'SVG' && element.tagName.toUpperCase() !== 'IMG' && element.tagName.toUpperCase() !== 'PICTURE') && (!!listeners.click || element.tagName.toUpperCase() === 'BUTTON' || element.tagName.toUpperCase() === 'A' || element.tagName.toUpperCase() === 'INPUT' || element.tagName.toUpperCase() === 'TEXTAREA' || (element.onclick !== null) || window.getComputedStyle(element).cursor === 'pointer')
+    }) && (!!listeners.click || (element.onclick !== null) || window.getComputedStyle(element).cursor === 'pointer')
   }).map((element: HTMLElement) => element.cloneNode(true))
   // .map(element => {
   //   const rect = element.getBoundingClientRect()
@@ -113,9 +127,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     // sendResponse(doc.body.outerHTML)
     
-    const elements = clickExtractor(document.querySelectorAll('*')) as Array<HTMLElement>
+    const clickables = clickExtractor(document.querySelectorAll('*')) as Array<HTMLElement>
+    const inputs = inputExtractor(document.querySelectorAll('*')) as Array<HTMLElement>
+    // const dom = document.documentElement.cloneNode(true) as HTMLElement
 
-    sendResponse((elements.map(el => {
+    // dom.querySelectorAll('*').forEach(el => {
+    //   if (el.checkVisibility({
+    //     checkOpacity: true,
+    //     checkVisibilityCSS: true,
+    //   }) && !inputs.includes(el as HTMLElement) && !clickables.includes(el as HTMLElement)) {
+    //     el.remove()
+    //   }
+    // })
+
+
+    // Array.prototype.slice.call(document.body.querySelectorAll('*')).filter(el => el.checkVisibility({
+    //   checkOpacity: true,
+    //   checkVisibilityCSS: true,
+    // }) && !inputs.includes(el) && !clickables.includes(el)).forEach(el => el.setAttribute('browse-llm-content', 'true'))
+
+    const trimmer = (elements: Array<HTMLElement>) => elements.map(el => {
       el.querySelectorAll('script').forEach(script => {
         // script.parentNode?.removeChild(script)
         script.remove()
@@ -126,23 +157,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         style.remove()
       })
 
-      el.querySelectorAll('svg').forEach(svg => {
-        // svg.parentNode?.removeChild(svg)
-        svg.remove()
-      })
+      // el.querySelectorAll('svg').forEach(svg => {
+      //   // svg.parentNode?.removeChild(svg)
+      //   svg.remove()
+      // })
 
-      el.querySelectorAll('img').forEach(img => {
-        // img.parentNode?.removeChild(img)
-        img.remove()
-      })
+      // el.querySelectorAll('img').forEach(img => {
+      //   // img.parentNode?.removeChild(img)
+      //   img.remove()
+      // })
 
-      el.querySelectorAll('picture').forEach(picture => {
-        // picture.parentNode?.removeChild(picture)
-        picture.remove()
-      })
+      // el.querySelectorAll('picture').forEach(picture => {
+      //   // picture.parentNode?.removeChild(picture)
+      //   picture.remove()
+      // })
 
       Array.from(el.attributes).forEach(attribute => {
-        if (!['id', 'class', 'type', 'action', 'method', 'name', 'title', 'alt'].includes(attribute.name)) {
+        if (!attribute.name.startsWith('aria-') && !['id', 'class', 'role', 'type', 'action', 'method', 'name', 'title', 'alt'].includes(attribute.name)) {
           el.removeAttributeNode(attribute)
         }
       })
@@ -150,6 +181,38 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       el.innerHTML = el.textContent || ''
 
       return el.outerHTML
-    })))
+    })
+
+    sendResponse(JSON.stringify({
+      inputs: trimmer(inputs),
+      clickables: trimmer(clickables),
+      // content: convert(document.body.innerHTML, {
+      //   wordwrap: false,
+      // }),
+      content: convert(document.body.innerHTML, {
+        wordwrap: false,
+        selectors: [
+          {
+            selector: 'a',
+            // options: {
+            //   ignoreHref: true,
+            // },
+            format: 'skip',
+          },
+          {
+            selector: 'img',
+            format: 'skip',
+          },
+          {
+            selector: 'picture',
+            format: 'skip',
+          },
+          {
+            selector: 'svg',
+            format: 'skip',
+          },
+        ],
+      }),
+    }))
   }
 })

@@ -31,17 +31,17 @@ export const injectCode = async (code: string) => {
 }
 
 export const request = async (prompt: string) => {
-  const dom = await getDom()
+  const dom = JSON.parse(await getDom())
 
   const content = `
-    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is the list of all the inputs and clickable elements in the DOM (starting with "DOM: ").
+    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is an object, with the list of all the inputs, clickable elements, and the content in the DOM (starting with "DOM: ").
     You should generate a javascript code that if executed in the page with the given task, it can achieve the required task.
     Make sure to generate correct browser javascript code and only return a code, nothing else.
     Enclose the javascript code like this: append "--------------------" at the start and end of the code block so I can extract the code.
 
     Task: ${prompt}
 
-    DOM: ${dom}
+    DOM: ${JSON.stringify(dom)}
   `
 
   switch ($provider.get()) {
