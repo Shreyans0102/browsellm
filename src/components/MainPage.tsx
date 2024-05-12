@@ -6,22 +6,61 @@ import { injectCode, request } from '../helpers'
 const MainPage: Component = () => {
   const [prompt, setPrompt] = createSignal('')
   const [isLoading, setIsLoading] = createSignal(false)
-  const [response, setReponse] = createSignal('')
-
+  const [response, setResponse] = createSignal('')
+  
   const go = async () => {
     try {
       setIsLoading(true)
       
-      const res = await request(prompt()) as string
-      setReponse(res as string)
+      const res = JSON.parse(await request(prompt()) as string)
 
-      const code = res.split('--------------------')[1]
-      await injectCode(code)
+      console.log(res)
+      
+      if (res.type === 'output') {
+        setResponse(res.content as string)
+      } else if (res.type === 'action') {
+        setResponse(res.content.map((action: any, index: number) => {
+          const llmIndex = action.llmIndex ?? action['llm-index']
+
+          if (action.type === 'click') {
+            return `${index}. Click on ${llmIndex}`
+          } else if (action.type === 'input') {
+            return `${index}. Type ${action.text} inside ${llmIndex}`
+          }
+        }).join(' | '))
+
+        for (const action of res.content) {
+          const llmIndex = action.llmIndex ?? action['llm-index']
+
+          const selector = `[llm-index="${llmIndex}"]`
+          
+          if (action.type === 'click') {
+            const code = `
+              const el = document.querySelector('${selector}')
+              el.click()
+            `
+            
+            await injectCode(code)
+          } else if (action.type === 'input') {
+            const code = `
+              const el = document.querySelector('${selector}')
+
+              if (el.tagName.toLowerCase() === 'input' || el.tagName.toLowerCase() === 'textarea') {
+                el.value = '${action.text}'
+              } else {
+                el.innerHTML = '${action.text}'
+              }
+            `
+
+            await injectCode(code)
+          }
+        }
+      }
     } catch (error) {
       if (error instanceof Error) {
-        setReponse(error.message)
+        setResponse(v => v + '\n\n' + error.message)
       } else {
-        setReponse(JSON.stringify(error))
+        setResponse(v => v + '\n\n' + JSON.stringify(error))
       }
     } finally {
       setIsLoading(false)

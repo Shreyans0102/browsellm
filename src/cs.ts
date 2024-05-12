@@ -3,6 +3,8 @@ import { convert } from 'html-to-text'
 
 const getEventListeners = updateEventListener()
 
+document.addEventListener('DOMContentLoaded', () => document.body.querySelectorAll('*').forEach((el, index) => el.setAttribute('llm-index', index.toString())))
+
 const inputExtractor = (el: NodeListOf<HTMLElement>) => {
   return Array.prototype.slice.call(el).filter((element: HTMLElement) => {
     return element.checkVisibility({
@@ -173,7 +175,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       // })
 
       Array.from(el.attributes).forEach(attribute => {
-        if (!attribute.name.startsWith('aria-') && !['id', 'class', 'role', 'type', 'action', 'method', 'name', 'title', 'alt'].includes(attribute.name)) {
+        if (!attribute.name.startsWith('aria-') && !attribute.name.startsWith('llm-') && !['id', 'class', 'role', 'type', 'action', 'method', 'name', 'title', 'alt'].includes(attribute.name)) {
           el.removeAttributeNode(attribute)
         }
       })
@@ -182,6 +184,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
       return el.outerHTML
     })
+
+    // const indexer = (els: Array<HTMLElement>, idPrefix: string) => els.map((el, llmIndex) => {
+    //   el.setAttribute('llm-index', idPrefix + llmIndex.toString())
+    //   return el
+    // })
 
     sendResponse(JSON.stringify({
       inputs: trimmer(inputs),

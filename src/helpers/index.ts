@@ -34,10 +34,32 @@ export const request = async (prompt: string) => {
   const dom = JSON.parse(await getDom())
 
   const content = `
-    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is an object, with the list of all the inputs, clickable elements, and the content in the DOM (starting with "DOM: ").
-    You should generate a javascript code that if executed in the page with the given task, it can achieve the required task.
-    Make sure to generate correct browser javascript code and only return a code, nothing else.
-    Enclose the javascript code like this: append "--------------------" at the start and end of the code block so I can extract the code.
+    You will receive two inputs. The first one is a task (starting with "Task: "), and the second is a JSON object, with the list of all the inputs, clickable elements, and the content in the DOM (starting with "DOM: ").
+    Your ultimate goal is to solve the task. The task either requires you to output something or perform some actions on the webpage.
+
+    If you think an output is requested, for instance, the summary of the page, or for answering some questions, you should return a JSON in this format:
+    {
+      "type": "output",
+      "content": <content>
+    }
+    If you think you need to perform an action, for instance, filling out an input field, or clicking on a button or link, you should return a JSON in this format:
+    {
+      "type": "action",
+      "content: [
+        {
+          "type": "click",
+          "llmIndex": <The 'llm-index' attribute of the clickable element that should be clicked in the page>
+        },
+        {
+          "type": "input",
+          "text": <Text to be put inside the input>,
+          "llmIndex": <The 'llm-index' attribute of the input element that should be filled with the text in the page>
+        },
+        ...
+      ]
+    }
+    You have as many actions is one step as you want, as long as you can be sure it's the correct action. Actions are either "click" or "input", are will be run in order you provide.
+    Make sure you return the result in the required format. You should only return a JSON object, nothing else.
 
     Task: ${prompt}
 
