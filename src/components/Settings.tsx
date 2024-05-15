@@ -21,8 +21,9 @@ const Settings: Component = () => {
     ],
     'together': [],
     'openai': [
-      'gpt-3.5-turbo-0125',
+      'gpt-3.5-turbo',
       'gpt-4-turbo',
+      'gpt-4o'
     ],
     'anthropic': [
       'claude-3-haiku-20240307',
