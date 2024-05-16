@@ -24,9 +24,9 @@ const MainPage: Component = () => {
           const llmIndex = action.llmIndex ?? action['llm-index']
 
           if (action.type === 'click') {
-            return `${index}. Click on ${llmIndex}`
+            return `${index + 1}. Click on <${llmIndex}>`
           } else if (action.type === 'input') {
-            return `${index}. Type ${action.text} inside ${llmIndex}`
+            return `${index + 1}. Type "${action.text}" inside <${llmIndex}>`
           }
         }).join(' | '))
 
