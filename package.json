@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "bundle": "bun src/script.ts && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
+    "bundle": "bun src/script.ts && bun build src/sw.ts --outfile=dist/sw.js --minify && bun build src/cs.ts --outfile=dist/cs.js --minify && bun build src/captcha.ts --outfile=dist/captcha.js --minify && bun build src/us.ts --outfile=dist/us.js --minify && rm -rf browse-llm.zip && zip -r browse-llm.zip dist/*",
     "preview": "astro preview",
     "astro": "astro"
   },

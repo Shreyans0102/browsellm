@@ -4,12 +4,12 @@ import Groq from 'groq-sdk'
 
 import { $provider, $allApiKeys, $model } from '../store'
 
-const getDom = async () => {
+const message = async (action: string, data?: object) => {
   const queryOptions = { active: true, lastFocusedWindow: true }
   const [tab] = await chrome.tabs?.query(queryOptions)
 
   if (tab.id) {
-    return await chrome.tabs?.sendMessage(tab.id, { action: 'getDom' })
+    return await chrome.tabs?.sendMessage(tab.id, { action, data })
   } else {
     return null
   }
@@ -30,8 +30,50 @@ export const injectCode = async (code: string) => {
   }
 }
 
+export const speachToText = async (url: string) => {
+  const openai = new OpenAI({
+    apiKey: $allApiKeys.get().openai,
+    dangerouslyAllowBrowser: true,
+  })
+
+  const audio = await fetch(url)
+
+  const file = new File([await audio.blob()], 'audio.mp3', {
+    lastModified: Date.now(),
+    type: 'audio/mp3',
+  })
+
+  return await openai.audio.transcriptions.create({
+    file,
+    model: 'whisper-1',
+    response_format: 'text',
+  })
+}
+
+export const solveCaptcha = async () => {
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+  await message('startCaptcha')
+
+  await delay(2000 + Math.floor(Math.random() * 1001))
+
+  await message('startCaptchaAudio')
+
+  await delay(1000 + Math.floor(Math.random() * 1001))
+
+  const url = await message('getCaptchaAudioUrl')
+
+  await delay(1000 + Math.floor(Math.random() * 1001))
+
+  if (url) {
+    const text = await speachToText(url)
+  
+    await message('setCaptchaText', text)
+  }
+}
+
 export const request = async (prompt: string) => {
-  const dom = JSON.parse(await getDom())
+  const dom = JSON.parse(await message('getDom'))
 
   const content = `
     You will receive two inputs. The first one is a task (starting with "Task: "), and the second is a JSON object, with the list of all the inputs, clickable elements, and the content in the DOM (starting with "DOM: ").

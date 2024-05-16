@@ -1,11 +1,12 @@
 import { Show, createSignal, type Component } from 'solid-js'
 
 import Settings from './Settings'
-import { injectCode, request } from '../helpers'
+import { injectCode, request, solveCaptcha } from '../helpers'
 
 const MainPage: Component = () => {
   const [prompt, setPrompt] = createSignal('')
   const [isLoading, setIsLoading] = createSignal(false)
+  const [isCaptchaLoading, setIsCaptchaLoading] = createSignal(false)
   const [response, setResponse] = createSignal('')
   
   const go = async () => {
@@ -66,6 +67,22 @@ const MainPage: Component = () => {
       setIsLoading(false)
     }
   }
+
+  const solve = async () => {
+    try {
+      setIsCaptchaLoading(true)
+      
+      await solveCaptcha()
+    } catch (error) {
+      if (error instanceof Error) {
+        setResponse(v => v + '\n\n' + error.message)
+      } else {
+        setResponse(v => v + '\n\n' + JSON.stringify(error))
+      }
+    } finally {
+      setIsCaptchaLoading(false)
+    }
+  }
   
   return <div>
     <div>
@@ -94,6 +111,11 @@ const MainPage: Component = () => {
         <code id="code">
           {response()}
         </code>
+      </div>
+      <div class="fixed bottom-24 left-4 right-4">
+        <button onClick={solve} class="btn h-14 w-full">
+          Solve CAPTCHA
+        </button>
       </div>
       <div class="fixed bottom-4 left-4 right-4">
         <Settings />
