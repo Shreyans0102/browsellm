@@ -154,7 +154,8 @@ Here are the steps to run the vision agent as a markdown list:
    - Copy the code from `preprocess_focusable.js` and run it in the Chrome console.
    - Copy the code from `interaction_functions.js` and run it in the Chrome console.
    - Take a screenshot of the processed page.
-   - Save the screenshot in the `vision` folder and name it `env_start.png`.
+   - Create a folder named `images` in the `vision_approach` folder
+   - Save the screenshot in the `images` folder and name it `env_start.png`.
 
 2. **Initial Actions**
    - Run `initial_actions.py`.
@@ -162,7 +163,7 @@ Here are the steps to run the vision agent as a markdown list:
    - For `click` actions, manually run `clickElementAtIndex(index=tagNumber)` in the console, where `tagNumber` is the tag number from the output.
    - For `input` actions, manually run `enterTextAtIndex(index=tagNumber, text_from_last_output)` in the console, where `tagNumber` is the tag number from the output, and `text_from_last_output` is the text to be entered.
    - Repeat the preprocessing step.
-   - Take a screenshot of the updated page and save it in the `vision` folder, naming it `env_next.png`.
+   - Take a screenshot of the updated page and save it in the `images` folder, naming it `env_next.png`.
 
 3. **Determine Further Actions**
    - Edit the `json_object` variable in `more_act.py` with the action list output from `initial_actions.py`.
