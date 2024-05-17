@@ -13,9 +13,18 @@ const MainPage: Component = () => {
     try {
       setIsLoading(true)
       
-      const res = JSON.parse(await request(prompt()) as string)
+      const str = await request(prompt()) as string
+      
+      console.log(str)
 
-      console.log(res)
+      const firstCurlyIndex = str.indexOf('{')
+      const lastCurlyIndex = str.lastIndexOf('}')
+
+      if (firstCurlyIndex === -1 || lastCurlyIndex === -1) {
+        throw new Error('LLM did not send proper JSON response.')
+      }
+
+      const res = JSON.parse(str.slice(firstCurlyIndex, lastCurlyIndex + 1))
       
       if (res.type === 'output') {
         setResponse(res.content as string)
