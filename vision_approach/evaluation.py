@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -10,7 +11,6 @@ client = OpenAI(api_key=openai_api_key)
 import base64
 import sys
 import json
-import os
 
 
 def encode_image(image_path):

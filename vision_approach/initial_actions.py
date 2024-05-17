@@ -1,4 +1,6 @@
+import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 openai_api_key = os.environ.get('OPENAI_API_KEY')
@@ -10,7 +12,6 @@ client = OpenAI(api_key=openai_api_key)
 import base64
 import sys
 import json
-import os
 
 
 
