@@ -11,7 +11,20 @@ const inputExtractor = (el: NodeListOf<HTMLElement>) => {
       checkOpacity: true,
       checkVisibilityCSS: true,
     }) && (
-      (element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'text')
+      (element.tagName.toLowerCase() === 'input' && [
+        'email',
+        'password',
+        'search',
+        'tel',
+        'text',
+        'url',
+        'number',
+        'date',
+        'datetime-local',
+        'month',
+        'time',
+        'week'
+      ].includes(element.getAttribute('type') || 'text'))
       || (element.tagName.toLocaleLowerCase() === 'textarea')
       || (element.hasAttribute('contenteditable') && element.getAttribute('contenteditable') !== 'false')
     )
