@@ -52,27 +52,7 @@ image_path = os.path.join(image_folder, image_name)
 # Getting the base64 string
 base64_image = encode_image(image_path)
 
-json_object = {
-  "type": "action",
-  "content": [
-    {
-      "type": "click",
-      "field": "Menu"
-    },
-    {
-      "type": "click",
-      "field": "Top Rated Movies"
-    },
-    {
-      "type": "click",
-      "field": "Top 250 Movies"
-    },
-    {
-      "type": "click",
-      "field": "The Good, the Bad and the Ugly"
-    }
-  ]
-}
+json_object = {}
 
 action_str = "Actions:\n" + "\n".join([f"- {action['type']} on field '{action['field']}'" for action in json_object["content"]]) + "\n\n"
 

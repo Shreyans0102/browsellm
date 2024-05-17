@@ -1,3 +1,26 @@
+/**
+* This script provides utility functions to interact with web elements on a page.
+*
+* The `visibleFocusableElements` variable is a NodeList containing all visible and
+* focusable elements on the page. This list is used as the default source of elements
+* for the utility functions.
+*
+* The `clickElementByTabIndex` function takes a `tabIndex` value and clicks the first
+* element on the page with that `tabindex` attribute value.
+*
+* The `clickElementAtIndex` function takes an `index` and an optional `nodeList` and
+* clicks the element at the specified index in the provided NodeList. If no NodeList
+* is provided, it defaults to using `visibleFocusableElements`.
+*
+* The `enterTextAtIndex` function takes an `index`, `text`, and an optional `nodeList`,
+* and enters the provided text into the input or textarea element at the specified index
+* in the provided NodeList. If no NodeList is provided, it defaults to using
+* `visibleFocusableElements`.
+*
+* Examples are provided for each function, demonstrating how to use them with specific
+* selectors or indices.
+*/
+
 // NodeList is visibleFocusableElements
 
 function clickElementByTabIndex(tabIndex) {

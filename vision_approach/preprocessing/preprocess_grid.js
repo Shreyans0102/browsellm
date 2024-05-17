@@ -1,3 +1,47 @@
+/**
+* This script creates a grid overlay on the webpage, with lines and labels displayed
+* at every 10 pixels of the viewport dimensions. The grid is intended to help with
+* positioning and layout tasks.
+*
+* The script starts by getting the current viewport dimensions using `window.innerWidth`
+* and `window.innerHeight`.
+*
+* A new `<div>` element is created to serve as the container for the grid, and it is
+* appended to the `<body>` element of the document. The container is positioned absolutely
+* at the top-left corner of the viewport and given a high `z-index` value to ensure it
+* appears on top of other elements. The `pointerEvents` property is set to `none` to allow
+* clicks and interactions to pass through the grid container.
+*
+* Two helper functions are defined:
+*
+* 1. `createLine(x, y, isHorizontal)`: This function creates a new `<div>` element to
+*    represent either a horizontal or vertical line in the grid. The line is positioned
+*    absolutely using the provided `x` and `y` coordinates, and its dimensions are set
+*    based on the viewport width and height, respectively. The line has a black background
+*    color for visibility.
+*
+* 2. `createLabel(x, y, text)`: This function creates a new `<div>` element to represent
+*    a label in the grid. The label is positioned absolutely using the provided `x` and `y`
+*    coordinates, and its text content is set to the provided `text` value. The label has
+*    a red color and a small font size for visibility.
+*
+* The script then generates the grid lines and labels using two nested loops:
+*
+* 1. The outer loop iterates from 0 to the viewport width, incrementing by 10 pixels each
+*    time. For each iteration, it creates a vertical line using `createLine(i, 0, false)`
+*    and a vertical label using `createLabel(i, 0, i)`.
+*
+* 2. The inner loop iterates from 0 to the viewport height, incrementing by 10 pixels each
+*    time. For each iteration, it creates a horizontal line using `createLine(0, i, true)`
+*    and a horizontal label using `createLabel(0, i, i)`.
+*
+* The result of running this script is a grid overlay on the webpage, with lines and labels
+* displayed at every 10 pixels of the viewport dimensions. This grid can be useful for
+* positioning and layout tasks, as it provides a visual reference for pixel coordinates and
+* measurements.
+*/
+
+
 // Get viewport dimensions
 const viewportWidth = window.innerWidth;
 const viewportHeight = window.innerHeight;
