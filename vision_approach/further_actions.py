@@ -1,3 +1,27 @@
+"""
+This script is designed to interact with a webpage through a series of actions, such as filling in input fields or clicking on buttons. It utilizes the OpenAI API to determine the appropriate actions based on a user-provided task, previously completed actions, and an image of the webpage.
+
+Args:
+   - OPENAI_API_KEY (str): The API key for the OpenAI API. This should be stored in the environment variable OPENAI_API_KEY.
+   - USER_TASK (str):
+Returns:
+   - None
+
+Description:
+   The script sends a request to the OpenAI API with the following inputs:
+   
+   1. User's task
+   2. List of actions previously taken on the webpage
+   3. An encoded image of the current webpage
+   
+   The response from the OpenAI API is expected to be a JSON object containing either an "output" or a list of "actions" to perform on the webpage.
+   
+   - If the response type is "output", the script prints the output.
+   - If the response type is "action", the script prints the list of actions.
+   
+ """
+
+
 import os
 from dotenv import load_dotenv
 load_dotenv()

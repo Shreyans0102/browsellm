@@ -1,3 +1,21 @@
+
+"""
+This script is used to evaluate the successful completion of a task involving webpage interactions.
+It takes two images as input: the first image corresponds to the initial state of the webpage, and the second image corresponds to the state of the webpage after some actions have been taken.
+The script uses the OpenAI GPT-4o model to generate a response indicating whether the task has been successfully completed or not, along with a reasoning for the decision.
+
+Usage:
+  - Set the environment variables OPENAI_API_KEY and USER_TASK to your OpenAI API key and the task prompt, respectively.
+  - Ensure that the images are located in the "images" folder in the same directory as this script.
+  - Run the script.
+
+"""
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Rest of the code...
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -13,7 +31,18 @@ import sys
 import json
 
 
+import base64
+
 def encode_image(image_path):
+  """
+  Encodes the image located at the given image_path into base64 format.
+
+  Args:
+    image_path (str): The path to the image file.
+
+  Returns:
+    str: The base64 encoded representation of the image.
+  """
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
