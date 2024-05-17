@@ -106,6 +106,7 @@ USER_TASK=.....
 ```
 
 3. Run ```pip install -r openai``` in terminal
+4. Run ```pip install -r dotenv``` in terminal
 
 
 ## Execution
