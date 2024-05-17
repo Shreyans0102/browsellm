@@ -188,7 +188,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       // })
 
       Array.from(el.attributes).forEach(attribute => {
-        if (!attribute.name.startsWith('llm-') && !attribute.name.startsWith('aria-') && !['role', 'type', 'action', 'method', 'name', 'title', 'alt', 'placeholder'].includes(attribute.name)) {
+        if (!attribute.name.startsWith('llm-') && !attribute.name.startsWith('aria-') && !['value', 'role', 'type', 'action', 'method', 'name', 'title', 'alt', 'placeholder'].includes(attribute.name)) {
           el.removeAttributeNode(attribute)
         }
       })
