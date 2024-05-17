@@ -1,5 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+openai_api_key = os.environ.get('OPENAI_API_KEY')
+task_prompt = os.environ.get('USER_TASK')
+
+
 from openai import OpenAI
-client = OpenAI(api_key="")
+client = OpenAI(api_key=openai_api_key)
 import base64
 import sys
 import json
@@ -18,7 +25,6 @@ image_folder = os.path.join(current_directory, "images")
 image_name = "env_start.png"
 image_path = os.path.join(image_folder, image_name)
 
-task_prompt = ""
 # Getting the base64 string
 base64_image = encode_image(image_path)
 
